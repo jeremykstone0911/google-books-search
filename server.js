@@ -1,30 +1,26 @@
 const express = require("express");
-
-// const path = require("path");
-const PORT = process.env.PORT || 3001;
-const app = express();
 const mongoose = require("mongoose");
 const routes = require("./routes");
-const logger = require("morgan");
 
-//define middleware
-app.use(logger("dev"));
-app.use(express.json());
+const PORT = process.env.PORT || 3001;
+const app = express();
+
 app.use(express.urlencoded({ extended: true }));
-// Serve up static assets (usually on heroku)
+app.use(express.json());
+
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+  app.use(express.static("./client/public/index.html"));
 }
 
-// Send requests to the React app
-// Define API routes
 app.use(routes);
 
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/GoogleBooksList",
-  { useNewUrlParser: true }
-);
+mongoose
+  .connect(process.env.MONGODB_URI || "mongodb://localhost/googlebooks_db", {
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("MongoDB Connected..."))
+  .catch((err) => console.log(err));
 
-app.listen(PORT, function () {
+app.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
 });

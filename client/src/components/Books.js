@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SearchArea from "./SearchArea";
-
+import request from "superagent";
 import API from "../utils/API";
 import { request } from "express";
 import Header from "./Header";
@@ -17,7 +17,7 @@ class Books extends React.Component {
   searchBook = (e) => {
     e.preventDefault();
     request
-      .get("getBooks")
+      .get("https://www.googleapis.com/books/v1/volumes")
       .query({ q: this.searchField })
       .then((data) => {
         console.log(data);
@@ -31,7 +31,7 @@ class Books extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div>
         <SearchArea
           searchBook={this.searchBook}
           handleSearch={this.handleSearch}

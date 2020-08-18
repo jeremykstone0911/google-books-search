@@ -1,4 +1,4 @@
-import axios from "axios";
+import request from "superagent";
 
 export default {
   getBooks: (query) => {
